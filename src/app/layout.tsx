@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "석건영 | Profile",
-  description: "개발자 석건영의 프로필 페이지입니다.",
+  title: "석건영 | 머신러닝 & LLM 엔지니어",
+  description: "인공지능 모델과 실서비스의 간극을 좁혀가고 있어요.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

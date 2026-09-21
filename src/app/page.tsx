@@ -5,7 +5,9 @@ import { useState } from "react";
 
 export default function HomePage() {
   const [copied, setCopied] = useState(false);
+  const [activeTab, setActiveTab] = useState("all");
   const email = "contact.keonyoung@example.com";
+  const githubUrl = "https://github.com/Seok-0509/";
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(email);
@@ -13,333 +15,315 @@ export default function HomePage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const techStacks = [
+  const projects = [
     {
-      category: "AI & Deep Learning",
-      icon: (
-        <svg className="w-4 h-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      ),
-      skills: ["PyTorch", "Hugging Face", "LLMs", "RAG", "Fine-Tuning", "vLLM", "LangChain"],
+      id: "agent",
+      category: "agent",
+      title: "자율형 AI 멀티 에이전트 플랫폼",
+      desc: "LangGraph와 FastAPI로 실시간 코드 작성 및 실행 파이프라인을 구축했어요.",
+      tags: ["LangGraph", "FastAPI", "Next.js 16", "Claude 3.7"],
+      badge: "핵심 프로젝트",
+      badgeType: "brand",
+      metrics: "작업 완료율 94.2%",
+      link: githubUrl,
     },
     {
-      category: "Backend & Systems",
-      icon: (
-        <svg className="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
-        </svg>
-      ),
-      skills: ["Python", "FastAPI", "Docker", "PostgreSQL", "Vector DB (Milvus)", "Linux"],
+      id: "rag",
+      category: "rag",
+      title: "엔터프라이즈 사내 지식검색 RAG 엔진",
+      desc: "수십만 건의 사내 규정과 기술 문서를 Milvus 하이브리드 벡터 검색으로 정확히 찾아줘요.",
+      tags: ["Milvus", "LlamaIndex", "PyTorch", "BGE-M3"],
+      badge: "운영 중",
+      badgeType: "success",
+      metrics: "검색 지연 85ms",
+      link: githubUrl,
     },
     {
-      category: "Frontend & Ecosystem",
-      icon: (
-        <svg className="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-        </svg>
-      ),
-      skills: ["TypeScript", "Next.js", "React", "Tailwind CSS", "Git"],
+      id: "serving",
+      category: "serving",
+      title: "대규모 LLM 양자화 및 고속 서빙 클러스터",
+      desc: "AWQ 기법과 vLLM을 결합해 GPU 메모리를 60% 절감하고 서빙 처리량을 3배 높였어요.",
+      tags: ["vLLM", "AWQ", "Docker", "Triton"],
+      badge: "최적화 완료",
+      badgeType: "neutral",
+      metrics: "VRAM 60% 절감",
+      link: githubUrl,
     },
   ];
 
-  const projects = [
-    {
-      title: "Autonomous Agent Orchestrator",
-      desc: "복잡한 문제 해결을 위한 멀티 에이전트 협업 및 코드 자동 생성·실행 파이프라인 시스템",
-      tags: ["LangGraph", "FastAPI", "Next.js", "Claude 3.7"],
-      badge: "Featured",
-      color: "border-blue-500/30 hover:border-blue-500/60",
-    },
-    {
-      title: "Enterprise Knowledge RAG Engine",
-      desc: "대규모 사내 기술 문서 및 규정 데이터를 고속 벡터 검색(Hybrid Search)하여 정확한 답변을 제공하는 QA 시스템",
-      tags: ["Milvus", "LlamaIndex", "PyTorch", "bge-m3"],
-      badge: "AI Service",
-      color: "border-purple-500/30 hover:border-purple-500/60",
-    },
-    {
-      title: "Open-source LLM Quantization & Serving",
-      desc: "vLLM 및 AWQ 기반으로 GPU 메모리 사용량을 60% 절감하고 Throughput을 3배 향상시킨 고속 추론 서빙 인프라",
-      tags: ["vLLM", "AWQ", "Docker", "Nvidia Triton"],
-      badge: "Optimization",
-      color: "border-emerald-500/30 hover:border-emerald-500/60",
-    },
+  const filteredProjects =
+    activeTab === "all"
+      ? projects
+      : projects.filter((p) => p.category === activeTab);
+
+  const skills = [
+    { category: "AI & 딥러닝", items: ["PyTorch", "Hugging Face", "LLMs", "RAG", "Fine-Tuning", "vLLM"] },
+    { category: "백엔드 & 시스템", items: ["Python", "FastAPI", "Docker", "PostgreSQL", "Milvus", "Linux"] },
+    { category: "웹 & 프론트엔드", items: ["TypeScript", "Next.js", "React", "Tailwind CSS", "Git"] },
   ];
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-900 transition-colors duration-300 dark:bg-[#0c0e14] dark:text-zinc-100">
-      {/* 배경 장식 글로우 효과 */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[850px] h-[500px] bg-gradient-to-tr from-blue-500/15 via-indigo-500/10 to-purple-500/15 blur-[120px] rounded-full" />
-        <div className="absolute top-1/2 -right-40 w-[600px] h-[600px] bg-cyan-500/10 blur-[130px] rounded-full" />
-      </div>
-
-      <div className="relative z-10 mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-        {/* 메인 프로필 헤더 카드 */}
-        <div className="overflow-hidden rounded-3xl border border-zinc-200/80 bg-white/75 shadow-xl backdrop-blur-xl transition-all duration-300 dark:border-zinc-800/80 dark:bg-zinc-900/60">
-          {/* 상단 커버 배너 */}
-          <div className="relative h-44 w-full sm:h-56 md:h-64 overflow-hidden">
-            <Image
-              src="/banner.jpg"
-              alt="Profile Cover Banner"
-              fill
-              priority
-              className="object-cover transition-transform duration-700 hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-            
-            {/* 상태 뱃지 */}
-            <div className="absolute right-4 top-4 sm:right-6 sm:top-6">
-              <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-black/50 px-3.5 py-1.5 text-xs font-medium text-emerald-300 shadow-md backdrop-blur-md">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-                </span>
-                Open to Collaboration
-              </span>
+    <div className="min-h-screen bg-[#f2f4f6] text-[#191f28] pb-32">
+      {/* 1. 상단 TopBar (56pt) */}
+      <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-[#e5e8eb]">
+        <div className="max-w-[680px] mx-auto h-14 px-5 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-[#f2f7ff] flex items-center justify-center">
+              <span className="text-[#3182f6] font-bold text-sm">석</span>
             </div>
+            <span className="font-bold text-[17px] text-[#191f28] tracking-tight">
+              석건영
+            </span>
           </div>
 
-          {/* 프로필 상세 정보 섹션 */}
-          <div className="relative px-6 pb-8 pt-0 sm:px-10">
-            {/* 아바타 이미지 & 이름 */}
-            <div className="-mt-16 sm:-mt-20 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
-              <div className="flex flex-col sm:flex-row items-center sm:items-end gap-5">
-                <div className="group relative h-28 w-28 sm:h-36 sm:w-36 overflow-hidden rounded-2xl border-4 border-white bg-zinc-100 shadow-2xl ring-2 ring-zinc-200/50 transition-transform duration-300 hover:scale-105 dark:border-zinc-900 dark:bg-zinc-800 dark:ring-zinc-700/50">
-                  <Image
-                    src="/profile.jpg"
-                    alt="석건영 프로필 사진"
-                    fill
-                    priority
-                    className="object-cover"
-                  />
-                </div>
-                <div className="text-center sm:text-left space-y-1">
-                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                    <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl text-zinc-900 dark:text-white">
-                      석건영
-                    </h1>
-                    <span className="rounded-md bg-blue-50 px-2 py-0.5 text-xs font-semibold text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-                      Keon-young Seok
-                    </span>
-                  </div>
-                  <p className="text-base font-semibold text-blue-600 dark:text-blue-400">
-                    Machine Learning & LLM Engineer
-                  </p>
-                  <p className="flex items-center justify-center sm:justify-start gap-1.5 text-xs text-zinc-500 dark:text-zinc-400">
-                    <svg className="h-3.5 w-3.5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    Seoul, South Korea · AI Innovation Lab
-                  </p>
-                </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleCopyEmail}
+              className="px-3 py-1.5 rounded-full text-xs font-semibold text-[#4e5968] bg-[#f2f4f6] active:bg-[#e5e8eb] transition-colors"
+            >
+              {copied ? "이메일 복사됨 ✓" : "이메일 복사"}
+            </button>
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-1.5 rounded-full text-xs font-semibold text-[#3182f6] bg-[#f2f7ff] active:bg-[#e5e8eb] transition-colors flex items-center gap-1"
+            >
+              <span>GitHub</span>
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </header>
+
+      {/* 2. 메인 컨테이너 (토스 모바일-퍼스트 단일 컬럼: max-w 680px) */}
+      <main className="max-w-[680px] mx-auto px-4 sm:px-5 pt-6 space-y-4">
+        
+        {/* 프로필 Hero Card */}
+        <section className="bg-white rounded-[28px] p-6 sm:p-8 border border-black/[0.04] shadow-xs">
+          <div className="flex items-start justify-between gap-4">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#f2f7ff] text-[#3182f6] text-xs font-semibold">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#3182f6]"></span>
+                <span>협업 및 채용 열려있어요</span>
               </div>
-
-              {/* 빠른 인터랙션 버튼 (연락하기 & 복사) */}
-              <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2 sm:pt-0">
-                <button
-                  onClick={handleCopyEmail}
-                  className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-xs font-semibold text-zinc-700 shadow-sm transition-all hover:bg-zinc-100 hover:text-zinc-900 active:scale-95 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
-                >
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                  {copied ? "이메일 복사됨! ✓" : "이메일 복사"}
-                </button>
-
-                <a
-                  href="https://github.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl bg-zinc-900 px-5 py-2.5 text-xs font-semibold text-white shadow-md transition-all hover:bg-zinc-800 hover:shadow-lg active:scale-95 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-                >
-                  <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
-                    <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-                  </svg>
-                  GitHub 방문
-                </a>
-              </div>
-            </div>
-
-            {/* 소개 글 */}
-            <div className="mt-8 rounded-2xl bg-zinc-50/80 p-5 sm:p-6 border border-zinc-200/60 dark:bg-zinc-800/40 dark:border-zinc-700/60">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-                About Me
-              </h2>
-              <p className="mt-2.5 text-sm sm:text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
-                인공지능 기술로 복잡한 현실 문제를 해결하고, 사용자에게 실질적인 가치를 전달하는 머신러닝 & LLM 엔지니어 석건영입니다. 
-                최신 대형 언어 모델(LLM) 파인튜닝, RAG(검색 증강 생성) 지식 베이스 아키텍처, 그리고 자율형 AI 에이전트 시스템을 집중적으로 연구하고 구현하고 있습니다.
+              
+              <h1 className="text-2xl sm:text-[28px] font-bold text-[#191f28] tracking-tight leading-snug">
+                복잡한 AI 모델을<br />
+                실제 가치로 연결해요
+              </h1>
+              
+              <p className="text-[15px] font-normal text-[#4e5968] leading-relaxed pt-1">
+                대규모 언어 모델(LLM) 파인튜닝과 고성능 RAG 검색, 자율형 에이전트 아키텍처를 연구하고 개발하는 엔지니어 석건영입니다.
               </p>
             </div>
 
-            {/* 통계 / 하이라이트 지표 카드 그리드 */}
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-              <div className="rounded-2xl border border-zinc-200/70 bg-white/70 p-4 text-center dark:border-zinc-800 dark:bg-zinc-800/40">
-                <span className="text-2xl sm:text-3xl font-black text-blue-600 dark:text-blue-400">15+</span>
-                <p className="mt-1 text-xs font-medium text-zinc-500 dark:text-zinc-400">AI & ML Projects</p>
-              </div>
-              <div className="rounded-2xl border border-zinc-200/70 bg-white/70 p-4 text-center dark:border-zinc-800 dark:bg-zinc-800/40">
-                <span className="text-2xl sm:text-3xl font-black text-purple-600 dark:text-purple-400">99.8%</span>
-                <p className="mt-1 text-xs font-medium text-zinc-500 dark:text-zinc-400">Serving Reliability</p>
-              </div>
-              <div className="rounded-2xl border border-zinc-200/70 bg-white/70 p-4 text-center dark:border-zinc-800 dark:bg-zinc-800/40">
-                <span className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400">60%↓</span>
-                <p className="mt-1 text-xs font-medium text-zinc-500 dark:text-zinc-400">Memory Optimization</p>
-              </div>
-              <div className="rounded-2xl border border-zinc-200/70 bg-white/70 p-4 text-center dark:border-zinc-800 dark:bg-zinc-800/40">
-                <span className="text-2xl sm:text-3xl font-black text-amber-600 dark:text-amber-400">Top 5%</span>
-                <p className="mt-1 text-xs font-medium text-zinc-500 dark:text-zinc-400">Benchmark Score</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 2단 Bento Grid: 기술 스택 & 주요 프로젝트 */}
-        <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {/* 왼쪽: 기술 스택 & Connect (1열) */}
-          <div className="space-y-6 lg:col-span-1">
-            <div className="rounded-3xl border border-zinc-200/80 bg-white/75 p-6 shadow-xl backdrop-blur-xl dark:border-zinc-800/80 dark:bg-zinc-900/60">
-              <div className="flex items-center gap-2 mb-6">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400">
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                  </svg>
-                </div>
-                <h3 className="text-base font-bold text-zinc-900 dark:text-white">Tech Stacks</h3>
-              </div>
-
-              <div className="space-y-5">
-                {techStacks.map((group) => (
-                  <div key={group.category} className="space-y-2.5">
-                    <div className="flex items-center gap-2 text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-                      {group.icon}
-                      <span>{group.category}</span>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {group.skills.map((skill) => (
-                        <span
-                          key={skill}
-                          className="rounded-lg border border-zinc-200/70 bg-zinc-50/80 px-2.5 py-1 text-xs font-medium text-zinc-800 transition-all hover:scale-105 hover:bg-white hover:shadow-xs dark:border-zinc-700/60 dark:bg-zinc-800/60 dark:text-zinc-200 dark:hover:bg-zinc-700"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* 빠른 링크 카드 */}
-            <div className="rounded-3xl border border-zinc-200/80 bg-white/75 p-6 shadow-xl backdrop-blur-xl dark:border-zinc-800/80 dark:bg-zinc-900/60">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-4">
-                Connect
-              </h3>
-              <div className="space-y-2.5">
-                <a
-                  href={`mailto:${email}`}
-                  className="flex items-center justify-between rounded-xl p-3 text-xs font-medium text-zinc-700 transition-all hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-500/10 text-red-600 dark:text-red-400">
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                    </span>
-                    <span>Email Me</span>
-                  </div>
-                  <span className="text-zinc-400">→</span>
-                </a>
-
-                <a
-                  href="https://github.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between rounded-xl p-3 text-xs font-medium text-zinc-700 transition-all hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900/10 text-zinc-900 dark:bg-white/10 dark:text-white">
-                      <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
-                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                      </svg>
-                    </span>
-                    <span>GitHub Profile</span>
-                  </div>
-                  <span className="text-zinc-400">→</span>
-                </a>
-              </div>
+            <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden shrink-0 border border-[#e5e8eb] shadow-xs bg-[#f2f4f6]">
+              <Image
+                src="/profile.jpg"
+                alt="석건영 프로필 사진"
+                width={96}
+                height={96}
+                priority
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
 
-          {/* 오른쪽: 주요 프로젝트 (2열) */}
-          <div className="lg:col-span-2 space-y-6">
-            <div className="rounded-3xl border border-zinc-200/80 bg-white/75 p-6 sm:p-8 shadow-xl backdrop-blur-xl dark:border-zinc-800/80 dark:bg-zinc-900/60">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-600 dark:bg-indigo-400/10 dark:text-indigo-400">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-base font-bold text-zinc-900 dark:text-white">Featured Projects</h3>
-                </div>
-                <span className="text-xs font-semibold text-zinc-400">Selected Work</span>
-              </div>
+          {/* 핵심 지표 하이라이트 (토스식 Tabular 숫자) */}
+          <div className="grid grid-cols-3 gap-2 pt-6 mt-6 border-t border-[#f2f4f6]">
+            <div className="bg-[#f9fafb] rounded-2xl p-3.5 text-center">
+              <div className="text-[13px] text-[#8b95a1] font-medium">프로젝트</div>
+              <div className="text-lg sm:text-xl font-bold text-[#191f28] tabular pt-0.5">15건+</div>
+            </div>
+            <div className="bg-[#f9fafb] rounded-2xl p-3.5 text-center">
+              <div className="text-[13px] text-[#8b95a1] font-medium">서빙 가용성</div>
+              <div className="text-lg sm:text-xl font-bold text-[#05a065] tabular pt-0.5">99.8%</div>
+            </div>
+            <div className="bg-[#f9fafb] rounded-2xl p-3.5 text-center">
+              <div className="text-[13px] text-[#8b95a1] font-medium">VRAM 절감</div>
+              <div className="text-lg sm:text-xl font-bold text-[#3182f6] tabular pt-0.5">60%</div>
+            </div>
+          </div>
+        </section>
 
-              <div className="space-y-4">
-                {projects.map((project) => (
-                  <div
-                    key={project.title}
-                    className={`group relative rounded-2xl border p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${project.color} bg-white/50 dark:bg-zinc-800/40`}
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <div className="flex items-center gap-2.5">
-                          <h4 className="text-base sm:text-lg font-bold text-zinc-900 group-hover:text-blue-600 dark:text-white dark:group-hover:text-blue-400 transition-colors">
-                            {project.title}
-                          </h4>
-                          <span className="rounded-full bg-blue-100/80 px-2.5 py-0.5 text-[10px] font-bold text-blue-700 dark:bg-blue-900/50 dark:text-blue-300">
-                            {project.badge}
-                          </span>
-                        </div>
-                        <p className="mt-2 text-xs sm:text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-                          {project.desc}
-                        </p>
-                      </div>
+        {/* 프로젝트 섹션 (ListRow 스타일) */}
+        <section className="bg-white rounded-[28px] p-6 border border-black/[0.04] shadow-xs space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-[20px] font-bold text-[#191f28] tracking-tight">
+              진행한 프로젝트
+            </h2>
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-semibold text-[#8b95a1] hover:text-[#3182f6] flex items-center gap-0.5 transition-colors"
+            >
+              <span>전체보기</span>
+              <span>›</span>
+            </a>
+          </div>
 
-                      <div className="rounded-xl border border-zinc-200/60 p-2 text-zinc-400 group-hover:border-blue-300 group-hover:text-blue-600 dark:border-zinc-700 dark:group-hover:border-blue-700 dark:group-hover:text-blue-400 transition-all">
-                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </div>
+          {/* 필터 칩 (Full Pill 형태) */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+            {[
+              { key: "all", label: "전체" },
+              { key: "agent", label: "에이전트" },
+              { key: "rag", label: "RAG 지식검색" },
+              { key: "serving", label: "서빙 최적화" },
+            ].map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className={`px-3.5 py-1.5 rounded-full text-[13px] font-semibold whitespace-nowrap transition-all ${
+                  activeTab === tab.key
+                    ? "bg-[#191f28] text-white"
+                    : "bg-[#f2f4f6] text-[#6b7684] hover:bg-[#e5e8eb]"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* 프로젝트 리스트 (ListRow) */}
+          <div className="divide-y divide-[#f2f4f6] pt-1">
+            {filteredProjects.map((project) => (
+              <a
+                key={project.id}
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block py-4 first:pt-2 last:pb-2 transition-colors"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`text-[11px] font-semibold px-2 py-0.5 rounded-md ${
+                          project.badgeType === "brand"
+                            ? "bg-[#f2f7ff] text-[#3182f6]"
+                            : project.badgeType === "success"
+                            ? "bg-[#e8f7f0] text-[#05a065]"
+                            : "bg-[#f2f4f6] text-[#6b7684]"
+                        }`}
+                      >
+                        {project.badge}
+                      </span>
+                      <span className="text-[12px] font-bold text-[#3182f6] tabular">
+                        {project.metrics}
+                      </span>
                     </div>
 
-                    <div className="mt-4 flex flex-wrap gap-2 pt-2 border-t border-zinc-200/50 dark:border-zinc-800/50">
+                    <h3 className="text-[17px] font-semibold text-[#191f28] group-hover:text-[#3182f6] transition-colors leading-snug">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-[14px] text-[#4e5968] leading-relaxed">
+                      {project.desc}
+                    </p>
+
+                    <div className="flex flex-wrap gap-1.5 pt-1">
                       {project.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="rounded-md bg-zinc-100/80 px-2 py-0.5 text-[11px] font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
+                          className="text-[12px] text-[#8b95a1] bg-[#f9fafb] px-2 py-0.5 rounded-md font-medium"
                         >
                           #{tag}
                         </span>
                       ))}
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* 하단 푸터 */}
-        <footer className="mt-12 text-center text-xs text-zinc-400 dark:text-zinc-500 space-y-1">
-          <p>© {new Date().getFullYear()} 석건영 (Keon-young Seok). All rights reserved.</p>
-          <p className="text-[11px]">Crafted with Next.js & Tailwind CSS</p>
+                  <div className="w-8 h-8 rounded-full bg-[#f9fafb] group-hover:bg-[#f2f7ff] flex items-center justify-center text-[#8b95a1] group-hover:text-[#3182f6] shrink-0 mt-1 transition-colors">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        {/* 기술 스택 섹션 */}
+        <section className="bg-white rounded-[28px] p-6 border border-black/[0.04] shadow-xs space-y-5">
+          <h2 className="text-[20px] font-bold text-[#191f28] tracking-tight">
+            사용하는 기술
+          </h2>
+
+          <div className="space-y-4">
+            {skills.map((group) => (
+              <div key={group.category} className="space-y-2">
+                <div className="text-[13px] font-semibold text-[#8b95a1]">
+                  {group.category}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {group.items.map((skill) => (
+                    <span
+                      key={skill}
+                      className="px-3 py-1.5 rounded-xl bg-[#f2f4f6] text-[14px] font-semibold text-[#333d4b]"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 자주 묻는 질문 / 가치관 카드 */}
+        <section className="bg-white rounded-[28px] p-6 border border-black/[0.04] shadow-xs space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">💡</span>
+            <h2 className="text-[18px] font-bold text-[#191f28]">
+              어떤 엔지니어링을 지향하나요?
+            </h2>
+          </div>
+          <p className="text-[15px] text-[#4e5968] leading-relaxed">
+            아무리 복잡하고 최신의 인공지능 모델이라도 사용자가 체감하는 가치와 속도로 이어지지 않으면 의미가 없다고 믿어요. 직관적이고 안정적인 서비스 구조를 만드는데 깊게 몰입해요.
+          </p>
+        </section>
+
+        {/* 푸터 안내 */}
+        <footer className="pt-6 pb-4 text-center text-xs text-[#8b95a1] space-y-1">
+          <p>© {new Date().getFullYear()} 석건영. 모든 권리 보유.</p>
+          <p className="text-[11px] text-[#b0b8c1]">토스 디자인 시스템(TDS) 가이드라인을 기반으로 제작되었어요</p>
         </footer>
+
+      </main>
+
+      {/* 3. 하단 고정 BottomCTA (56pt + 보호 그라디언트) */}
+      <div className="fixed bottom-0 inset-x-0 z-40 bg-gradient-to-t from-white via-white/95 to-transparent pt-6 pb-5 px-4 sm:px-5">
+        <div className="max-w-[680px] mx-auto flex items-center gap-2.5">
+          <button
+            onClick={handleCopyEmail}
+            className="flex-1 h-14 rounded-2xl bg-[#f2f4f6] text-[#191f28] font-bold text-[16px] active:bg-[#e5e8eb] transition-colors flex items-center justify-center gap-2"
+          >
+            <span>{copied ? "이메일이 복사되었어요 ✓" : "이메일 복사하기"}</span>
+          </button>
+          
+          <a
+            href={githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 h-14 rounded-2xl bg-[#3182f6] text-white font-bold text-[16px] active:bg-[#1b64da] shadow-sm transition-colors flex items-center justify-center gap-1.5"
+          >
+            <span>GitHub 방문하기</span>
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </a>
+        </div>
       </div>
+
     </div>
   );
 }
+
+
+
 
