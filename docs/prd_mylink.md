@@ -304,3 +304,28 @@ PC에서는 프로필 페이지와 편집 영역을 넓게 사용할 수 있어�
 - 대시보드와 통계 기능은 아직 표시되지 않습니다.
 
 > 이 문서는 현재 시연 단계의 범위를 정의합니다. 이후 단계에서 인증, 대시보드, 통계 기능을 별도로 추가합니다.
+## 15. 디자인 시스템 구현 기준
+
+앞으로 진행하는 모든 디자인 및 UI 구현은 **shadcn/ui를 기반으로 하되, `design.md`에 정의된 토스 디자인 시스템의 시각 언어와 토큰을 적용**한다.
+
+- shadcn/ui의 컴포넌트 구조, 접근성 기준, 디자인 패턴을 우선 활용한다.
+- 색상, 타이포그래피, 간격, 모서리 반경, 투명도, 상태 표현은 `design.md`의 토큰을 기준으로 한다.
+- 토스 블루를 중심으로 한 브랜드 색상, 회색 기반의 중립 색상, 명확한 semantic 색상을 사용한다.
+- Pretendard 계열 폰트, 토스 스타일의 계층적 타이포그래피와 여백 체계를 따른다.
+- 버튼, 카드, 입력창, 다이얼로그 등 shadcn/ui 컴포넌트는 토스 스타일의 radius, surface, border, pressed/disabled 상태에 맞게 커스터마이징한다.
+- 컴포넌트는 `components.json` 설정과 `src/components/ui` 구조를 따른다.
+- shadcn/ui 컴포넌트를 사용하지 않는 경우에는 재사용성, 접근성, 토스 디자인 원칙과의 일관성 측면에서 사유를 문서화한다.
+- `tech-blog` 링크를 포함한 AI 개발 기술 블로그
+
+### 더미 링크 데이터
+
+개발 및 화면 검증 단계에서는 `src/app/page.tsx`의 `projects` 배열에 정의된 다음 더미 링크 데이터를 사용한다.
+
+| ID | 카테고리 | 링크 제목 | 태그 | 지표 |
+| --- | --- | --- | --- | --- |
+| `voice-agent` | agent | Voice Agent meeting assistant | Realtime API, WebSocket, Python, Whisper | Meeting time -70% |
+| `document-search` | rag | Document search automation | OCR, LlamaIndex, PostgreSQL, RAG | Answer accuracy 92% |
+| `model-dashboard` | serving | LLM serving observability dashboard | Grafana, Prometheus, Kubernetes, Docker | Availability 99.9% |
+| `tech-blog` | content | AI engineering notes | Blog, AI, Engineering, Next.js | 24 articles |
+
+모든 더미 링크의 기본 URL은 현재 GitHub 프로필 주소를 사용하며, 실제 프로젝트 URL이 준비되면 각 링크의 `link` 값을 교체한다.
