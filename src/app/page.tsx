@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function HomePage() {
@@ -78,6 +79,12 @@ export default function HomePage() {
 
           <div className="flex items-center gap-1.5">
             {/* 작은 화면에서는 접근 가능한 이름을 유지하고 아이콘만 표시 */}
+            <Link
+              href="/links"
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-semibold text-white bg-[#3182f6] active:bg-[#1b64da] transition-colors whitespace-nowrap"
+            >
+              <span>링크 관리</span>
+            </Link>
             <button
               onClick={handleCopyEmail}
               aria-label={copied ? "이메일 복사됨" : "이메일 복사"}
