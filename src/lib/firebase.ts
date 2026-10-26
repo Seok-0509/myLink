@@ -1,5 +1,6 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { getAnalytics, isSupported, type Analytics } from "firebase/analytics";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -13,6 +14,7 @@ const firebaseConfig = {
 
 // Keep initialization idempotent during Next.js development hot reloads.
 export const firebaseApp = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+export const firestore = getFirestore(firebaseApp);
 
 // Analytics is browser-only and is not available in every environment.
 export const firebaseAnalytics: Promise<Analytics | null> =
