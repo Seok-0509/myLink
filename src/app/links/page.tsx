@@ -102,6 +102,7 @@ export default function LinksPage() {
         description,
         tags: form.tags.split(",").map((tag) => tag.trim()).filter(Boolean),
         createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
       });
 
       setLinks(await loadLinks());
@@ -148,6 +149,7 @@ export default function LinksPage() {
       await updateDoc(doc(firestore, "users", "anonymous", "links", id), {
         title,
         url,
+        updatedAt: serverTimestamp(),
       });
 
       setLinks((current) =>
