@@ -2,13 +2,58 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { GoogleAuthButton } from "@/components/auth/GoogleAuthButton";
+import { firebaseAuth } from "@/lib/firebase";
+import { onAuthStateChanged, type User } from "firebase/auth";
 
 export default function HomePage() {
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
+  const [user, setUser] = useState<User | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
   const email = "contact.keonyoung@example.com";
   const githubUrl = "https://github.com/Seok-0509/";
+
+  useEffect(() => onAuthStateChanged(firebaseAuth, (nextUser) => {
+    setUser(nextUser);
+    setAuthLoading(false);
+  }), []);
+
+  if (!authLoading && !user) {
+    return (
+      <div className="min-h-screen bg-[#fbfcfd] text-[#111827]">
+        <header className="h-10 border-b border-[#edf0f3] bg-white">
+          <div className="mx-auto flex h-full max-w-[982px] items-center justify-between px-5">
+            <Link href="/" className="text-[14px] font-bold tracking-tight text-[#1238b8]">MyLink</Link>
+            <GoogleAuthButton />
+          </div>
+        </header>
+
+        <main className="mx-auto flex min-h-[calc(100vh-40px)] max-w-[982px] flex-col items-center px-5 pt-11 text-center sm:pt-12">
+          <section className="w-full max-w-[600px]">
+            <h1 className="font-mono text-[36px] font-extrabold leading-[1.08] tracking-[-0.06em] sm:text-[46px]">
+              Development in <span className="text-[#1746e8]">One<br className="sm:hidden" /> Link</span>.
+            </h1>
+            <p className="mt-5 text-[14px] leading-7 text-[#4b5563] sm:text-[15px]">
+              Github, 블로그, 포트폴리오까지.<br />개발자를 위한 모든 링크를 한 페이지에 담아보세요.
+            </p>
+            <div className="mt-6 flex justify-center">
+              <GoogleAuthButton className="w-[263px] justify-center rounded-none bg-[#f2f4f6] py-3 text-[13px] text-[#173de0] shadow-[0_5px_10px_rgba(23,61,224,0.2)] hover:bg-[#173de0] hover:text-white" />
+            </div>
+            <div className="mx-auto mt-12 w-[310px] rotate-[3deg] rounded-[20px] border border-[#eef1f5] bg-white p-3 text-left shadow-[0_18px_35px_rgba(31,41,55,0.12)] sm:w-[315px]">
+              <div className="flex items-center gap-2">
+                <div className="h-7 w-7 rounded-full bg-[#eef0f3]" />
+                <div className="h-2 w-20 rounded-full bg-[#eef0f3]" />
+              </div>
+              <div className="mt-3 h-11 rounded-xl border border-[#dce9ff] bg-[#edf4ff]" />
+              <div className="mt-2 h-11 rounded-xl bg-[#f6f7f9]" />
+            </div>
+          </section>
+        </main>
+      </div>
+    );
+  }
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(email);
@@ -78,6 +123,7 @@ export default function HomePage() {
           </div>
 
           <div className="flex items-center gap-1.5">
+            <GoogleAuthButton />
             {/* 작은 화면에서는 접근 가능한 이름을 유지하고 아이콘만 표시 */}
             <Link
               href="/links"

@@ -4,7 +4,7 @@ import type * as React from "react";
 import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { cn } from "@/lib/utils";
 
-export const Dialog = BaseDialog;
+export const Dialog = BaseDialog.Root;
 
 export function DialogBackdrop({ className, ...props }: React.ComponentProps<typeof BaseDialog.Backdrop>) {
   return <BaseDialog.Backdrop className={cn("fixed inset-0 z-50 bg-[#191f28]/45", className)} {...props} />;
